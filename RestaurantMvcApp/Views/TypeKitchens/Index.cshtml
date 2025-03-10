@@ -1,0 +1,31 @@
+﻿@using RestaurantMvcApp.Models
+@model List<TypeKitchen>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Перелік видів кухні</h1>
+@if (Model is null || Model.Count ==0)
+{
+    <h2>Вид кухні відсутній</h2>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Тип Кухні</th>
+            </tr>
+        </thead>
+		<tbody>
+			@foreach (TypeKitchen typeKitchen in Model)
+			{
+				<tr>
+					<td>@typeKitchen.Id</td>
+                    <td>@typeKitchen.TypeName</td>
+				</tr>
+			}
+    </table>
+}
