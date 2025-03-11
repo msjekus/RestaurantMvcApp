@@ -17,6 +17,7 @@ else
             <tr>
                 <th>Id</th>
                 <th>Тип Кухні</th>
+				<th></th>
             </tr>
         </thead>
 		<tbody>
@@ -25,6 +26,8 @@ else
 				<tr>
 					<td>@typeKitchen.Id</td>
                     <td>@typeKitchen.TypeName</td>
+					<td><a asp-action="edit"asp-route-id="@typeKitchen.Id">Edit</a></td>
+					<td><a asp-action="delete"asp-route-id="@typeKitchen.Id">Delete</a></td>
 				</tr>
 			}
         </tbody>

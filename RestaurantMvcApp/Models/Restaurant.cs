@@ -16,6 +16,6 @@
 
         public bool IsDeleted { get; set; }
 
-        public string ImagePath { get; set; } = default!;
+        public byte[] ImagePath { get; set; } = default!;
     }
 }
