@@ -8,6 +8,6 @@ namespace RestaurantMvcApp.Models
         [Display(Name = "Тип кухні")]
         public string TypeName { get; set; } = default!;
 
-        public ICollection<Restaurant> Restaurants { get; set; } = default!;
+        //public ICollection<Restaurant> Restaurants { get; set; } = default!;
     }
 }

@@ -24,6 +24,9 @@ namespace RestaurantMvcApp.Controllers
         {
             return View();
         }
+        [HttpPost]
+        //[IgnoreAntiforgeryToken]
+        
         public async Task<IActionResult> Create(TypeKitchen typeKitchen) 
         {
             if (!ModelState.IsValid)

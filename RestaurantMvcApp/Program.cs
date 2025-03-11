@@ -12,6 +12,6 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=TypeKitchen}/{action=Index}/{id?}");
+    pattern: "{controller=TypeKitchens}/{action=Index}/{id?}");
 
 app.Run();
