@@ -26,8 +26,11 @@ else
 				<tr>
 					<td>@typeKitchen.Id</td>
                     <td>@typeKitchen.TypeName</td>
-					<td><a asp-action="edit"asp-route-id="@typeKitchen.Id">Edit</a></td>
-					<td><a asp-action="delete"asp-route-id="@typeKitchen.Id">Delete</a></td>
+					<td>
+                        <a asp-action="details" asp-route-id="@typeKitchen.Id">Details</a>
+                        <a asp-action="edit" asp-route-id="@typeKitchen.Id">Edit</a>
+					    <a asp-action="delete" asp-route-id="@typeKitchen.Id">Delete</a>
+                    </td>
 				</tr>
 			}
         </tbody>

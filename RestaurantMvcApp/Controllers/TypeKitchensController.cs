@@ -34,7 +34,63 @@ namespace RestaurantMvcApp.Controllers
             context.TypeKitchens.Add(typeKitchen);
             await context.SaveChangesAsync();
             return RedirectToAction("Index");
-            
+        }
+
+        public async Task<IActionResult> Edit(int? id) 
+        {
+            if (id == null)
+                return NotFound();
+                TypeKitchen? typeKitchen=await context.TypeKitchens.FindAsync(id.Value);
+            if (typeKitchen == null)
+                return NotFound();
+            return View(typeKitchen);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(TypeKitchen typeKitchen)
+        {
+            if (!ModelState.IsValid)
+                return View(typeKitchen);
+            TypeKitchen? typeKitchen1=await context.TypeKitchens.FindAsync(typeKitchen.Id);
+            if(typeKitchen1 == null)
+                return NotFound();
+            typeKitchen1.TypeName = typeKitchen.TypeName;
+            await context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            TypeKitchen? typeKitchen = await context.TypeKitchens.FindAsync(id.Value);
+            if (typeKitchen == null)
+                return NotFound();
+            return View(typeKitchen);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> ConfirmDelete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            TypeKitchen? typeKitchen = await context.TypeKitchens.FindAsync(id.Value);
+            if (typeKitchen == null)
+                return NotFound();
+            context.TypeKitchens.Remove(typeKitchen);
+            await context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            TypeKitchen? typeKitchen = await context.TypeKitchens.FindAsync(id.Value);
+            if (typeKitchen == null)
+                return NotFound();
+            return View(typeKitchen);
         }
     }
 }
