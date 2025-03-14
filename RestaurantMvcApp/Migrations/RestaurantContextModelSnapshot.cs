@@ -82,12 +82,17 @@ namespace RestaurantMvcApp.Migrations
             modelBuilder.Entity("RestaurantMvcApp.Models.Restaurant", b =>
                 {
                     b.HasOne("RestaurantMvcApp.Models.TypeKitchen", "TypeKitchen")
-                        .WithMany()
+                        .WithMany("Restaurants")
                         .HasForeignKey("TypeKitchenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("TypeKitchen");
+                });
+
+            modelBuilder.Entity("RestaurantMvcApp.Models.TypeKitchen", b =>
+                {
+                    b.Navigation("Restaurants");
                 });
 #pragma warning restore 612, 618
         }

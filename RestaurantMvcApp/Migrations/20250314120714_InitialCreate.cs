@@ -35,7 +35,7 @@ namespace RestaurantMvcApp.Migrations
                     Telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HourOfWork = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ImagePath = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
                 constraints: table =>
                 {

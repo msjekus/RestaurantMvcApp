@@ -11,8 +11,8 @@ using RestaurantMvcApp.Data;
 namespace RestaurantMvcApp.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20250311103437_PhotoAdded")]
-    partial class PhotoAdded
+    [Migration("20250314120714_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,15 +40,16 @@ namespace RestaurantMvcApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte>("PhotoPath")
-                        .HasColumnType("tinyint");
 
                     b.Property<string>("Telephone")
                         .IsRequired()
@@ -84,12 +85,17 @@ namespace RestaurantMvcApp.Migrations
             modelBuilder.Entity("RestaurantMvcApp.Models.Restaurant", b =>
                 {
                     b.HasOne("RestaurantMvcApp.Models.TypeKitchen", "TypeKitchen")
-                        .WithMany()
+                        .WithMany("Restaurants")
                         .HasForeignKey("TypeKitchenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("TypeKitchen");
+                });
+
+            modelBuilder.Entity("RestaurantMvcApp.Models.TypeKitchen", b =>
+                {
+                    b.Navigation("Restaurants");
                 });
 #pragma warning restore 612, 618
         }

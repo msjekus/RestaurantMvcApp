@@ -13,7 +13,7 @@
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Restaurant.Id" />
-            <input type="hidden" asp-for="Image" />
+            <input type="hidden" asp-for=" Restaurant.ImagePath" />
             <div class="form-group">
                 <label asp-for="Restaurant.Name" class="control-label"></label>
                 <input asp-for="Restaurant.Name" class="form-control" />

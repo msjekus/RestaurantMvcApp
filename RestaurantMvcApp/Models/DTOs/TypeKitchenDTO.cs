@@ -1,13 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantMvcApp.Models
+namespace RestaurantMvcApp.Models.DTOs
 {
-    public class TypeKitchen
+    public class TypeKitchenDTO
     {
         public int Id { get; set; }
         [Display(Name = "Тип кухні")]
         public string TypeName { get; set; } = default!;
-
-        public ICollection<Restaurant> Restaurants { get; set; } = default!;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,12 @@ namespace RestaurantMvcApp.Controllers
     public class RestaurantsController : Controller
     {
         private readonly RestaurantContext _context;
+        private readonly IMapper mapper;
 
-        public RestaurantsController(RestaurantContext context)
+        public RestaurantsController(RestaurantContext context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
         // GET: Restaurants
@@ -26,7 +29,8 @@ namespace RestaurantMvcApp.Controllers
         {
             var restaurant = _context.Restaurants.Include(r => r.TypeKitchen)
                 .Where(r => r.IsDeleted == false);
-            return View(await restaurant.ToListAsync());
+            IEnumerable<RestaurantDTO> restaurantDTOs = mapper.Map<IEnumerable<RestaurantDTO>>(await restaurant.ToListAsync());
+            return View(restaurantDTOs);
         }
 
         // GET: Restaurants/Details/5
@@ -51,8 +55,12 @@ namespace RestaurantMvcApp.Controllers
         // GET: Restaurants/Create
         public IActionResult Create()
         {
-            ViewData["TypeKitchenId"] = new SelectList(_context.TypeKitchens, "Id", "TypeName");
-            return View();
+            EditRestaurantVM editRestaurantVM = new EditRestaurantVM()
+            {
+                TypeKitchens = new SelectList(_context.TypeKitchens, "Id", nameof(TypeKitchen.TypeName))
+            };
+            //ViewData["TypeKitchenId"] = new SelectList(_context.TypeKitchens, "Id", "TypeName");
+            return View(editRestaurantVM);
         }
 
         // POST: Restaurants/Create
@@ -60,19 +68,20 @@ namespace RestaurantMvcApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( RestaurantDTO restaurant, IFormFile photo)
+        public async Task<IActionResult> Create( RestaurantDTO restaurantDTO, IFormFile photo)
         {
             if (ModelState.IsValid)
             {
-                Restaurant createRestaurant = new Restaurant
-                {
-                    Name = restaurant.Name,
-                    TypeKitchenId = restaurant.TypeKitchenId,
-                    Address = restaurant.Address,
-                    Telephone = restaurant.Telephone,
-                    HourOfWork = restaurant.HourOfWork,
-                };
-                using(MemoryStream ms = new MemoryStream())
+                //Restaurant createRestaurant = new Restaurant
+                //{
+                //    Name = restaurant.Name,
+                //    TypeKitchenId = restaurant.TypeKitchenId,
+                //    Address = restaurant.Address,
+                //    Telephone = restaurant.Telephone,
+                //    HourOfWork = restaurant.HourOfWork,
+                //};
+                Restaurant createRestaurant = mapper.Map<Restaurant>(restaurantDTO);
+                using (MemoryStream ms = new MemoryStream())
                 {
                     photo.CopyTo(ms);
                     createRestaurant.ImagePath = ms.ToArray();
@@ -81,8 +90,13 @@ namespace RestaurantMvcApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeKitchenId"] = new SelectList(_context.TypeKitchens, "Id", "Id", restaurant.TypeKitchenId);
-            return View(restaurant);
+
+            EditRestaurantVM restaurantVM = new EditRestaurantVM
+            {
+                Restaurant = restaurantDTO,
+                TypeKitchens = new SelectList(_context.TypeKitchens, "Id", nameof(TypeKitchen.TypeName))
+            };
+            return View(restaurantVM);
         }
 
         // GET: Restaurants/Edit/5
@@ -98,19 +112,10 @@ namespace RestaurantMvcApp.Controllers
             {
                 return NotFound();
             }
-            RestaurantDTO restaurantDTO = new RestaurantDTO
-            {
-                Id = restaurant.Id,
-                Name = restaurant.Name,
-                TypeKitchenId = restaurant.TypeKitchenId,
-                Address = restaurant.Address,
-                Telephone = restaurant.Telephone,
-                HourOfWork = restaurant.HourOfWork,
-            };
+            RestaurantDTO restaurantDTO = mapper.Map<RestaurantDTO>(restaurant);
             EditRestaurantVM restaurantVM = new EditRestaurantVM
             {
                 Restaurant = restaurantDTO,
-                Image = restaurant.ImagePath,
                 TypeKitchens = new SelectList(_context.TypeKitchens, "Id", nameof(TypeKitchen.TypeName), restaurant.TypeKitchenId)
             };
            
@@ -131,15 +136,15 @@ namespace RestaurantMvcApp.Controllers
 
             if (ModelState.IsValid)
             {
-                Restaurant? editedRestaurant = await _context.Restaurants.FindAsync(id);
-                if (editedRestaurant == null)
-                    return NotFound();
-                editedRestaurant.Name = restaurant.Name;
-                editedRestaurant.TypeKitchenId = restaurant.TypeKitchenId;
-                editedRestaurant.Address = restaurant.Address;
-                editedRestaurant.Telephone = restaurant.Telephone;
-                editedRestaurant.HourOfWork = restaurant.HourOfWork;
-
+                //Restaurant? editedRestaurant = await _context.Restaurants.FindAsync(id);
+                //if (editedRestaurant == null)
+                //    return NotFound();
+                //editedRestaurant.Name = restaurant.Name;
+                //editedRestaurant.TypeKitchenId = restaurant.TypeKitchenId;
+                //editedRestaurant.Address = restaurant.Address;
+                //editedRestaurant.Telephone = restaurant.Telephone;
+                //editedRestaurant.HourOfWork = restaurant.HourOfWork;
+                Restaurant editedRestaurant = mapper.Map<Restaurant>(restaurant);
                 if (photo != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -173,7 +178,6 @@ namespace RestaurantMvcApp.Controllers
                 
                 TypeKitchens = new SelectList(_context.TypeKitchens, "Id", nameof(TypeKitchen.TypeName), restaurant.TypeKitchenId)
             };
-            //ViewData["TypeKitchenId"] = new SelectList(_context.TypeKitchens, "Id", "Id", restaurant.TypeKitchenId);
             return View(editRestaurantVM);
         }
 
@@ -204,10 +208,12 @@ namespace RestaurantMvcApp.Controllers
             var restaurant = await _context.Restaurants.FindAsync(id);
             if (restaurant != null)
             {
-                _context.Restaurants.Remove(restaurant);
+                //_context.Restaurants.Remove(restaurant);
+                restaurant.IsDeleted = true;
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

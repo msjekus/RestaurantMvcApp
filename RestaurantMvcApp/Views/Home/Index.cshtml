@@ -1,0 +1,47 @@
+﻿@model IndexVM
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	ViewBag.Title = "Мої улюблені ресторани";
+}
+<form method="get" asp-action="Index">
+	<div class="row g-3 align-items-center">
+		<div class="col-auto">
+			<label class="col-form-label">Тип кухні</label>
+		</div>
+		<div class="col-auto">
+			<select asp-for="TypeKitchenId" asp-items="Model.TypeKitchens" class="form-select"><option value="0">Всі</option></select>
+		</div>
+		<div class="col-auto">
+			<label class="col-form-label">Назва ресторану</label>
+		</div> 
+		<div class="col-auto">
+			<input type="text" asp-for="Search" class="form-control"/>
+		</div>
+		<div class="col-auto">
+			<button type="submit" class="btn btn-outline-success">Пошук</button>
+
+		</div>
+	</div>
+</form>
+<div class="container mt-3">
+	<div class="row row-cols-2">
+		@foreach (RestaurantDTO restaurantDTO in Model.Restaurants)
+		{
+			<div class="col">
+				<div class="card mb-3" >
+					<img src="data:image/*;base64,@(Convert.ToBase64String(restaurantDTO.ImagePath!))" class="card-img-top" alt="@restaurantDTO.Name" >
+					<div class="card-body">
+						<h5 class="card-title">@restaurantDTO.Name</h5>
+						<p class="card-text">@restaurantDTO.Address</p>
+						<p class="card-text">@restaurantDTO.Telephone</p>
+						<p class="card-text">@restaurantDTO.HourOfWork</p>
+						<a asp-action="Details" asp-route-id="@restaurantDTO.Id" class="btn btn-outline-success">Детальніше</a>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>	
+		

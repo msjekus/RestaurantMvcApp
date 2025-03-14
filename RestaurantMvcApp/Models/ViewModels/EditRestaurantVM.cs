@@ -8,6 +8,6 @@ namespace RestaurantMvcApp.Models.ViewModels
         public RestaurantDTO Restaurant { get; set; }=default!;
 
         public SelectList TypeKitchens { get; set; } = default!; 
-        public byte[]? Image { get; set; }
+        //public byte[]? Image { get; set; }
     }
 }

@@ -12,6 +12,9 @@
 }
 else
 {
+    <p>
+        <a asp-action="Create">Додати новий тип</a>
+    </p>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -27,9 +30,9 @@ else
 					<td>@typeKitchen.Id</td>
                     <td>@typeKitchen.TypeName</td>
 					<td>
-                        <a asp-action="details" asp-route-id="@typeKitchen.Id">Details</a>
-                        <a asp-action="edit" asp-route-id="@typeKitchen.Id">Edit</a>
-					    <a asp-action="delete" asp-route-id="@typeKitchen.Id">Delete</a>
+                        <a asp-action="details" asp-route-id="@typeKitchen.Id">Details</a> |
+                        <a asp-action="edit" asp-route-id="@typeKitchen.Id">Edit</a> |
+                        <a asp-action="delete" asp-route-id="@typeKitchen.Id">Delete</a> 
                     </td>
 				</tr>
 			}
