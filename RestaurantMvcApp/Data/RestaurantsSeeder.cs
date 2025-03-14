@@ -34,10 +34,12 @@ namespace RestaurantMvcApp.Data
                     string webRootPath = environment.WebRootPath;
                     string filePath1 =$"{webRootPath}/images/1.jpg";
                     string filePath2 =$"{webRootPath}/images/3.jpg";
-                    string filePath3 =$"{webRootPath}/images/kobe.jpg";
+                    string filePath3 =$"{webRootPath}/images/kob.jpg";
+                    string filePath4 =$"{webRootPath}/images/4.jpg";
                     byte[] image1 = File.ReadAllBytes(filePath1);
                     byte[] image2 = File.ReadAllBytes(filePath2);
                     byte[] image3 = File.ReadAllBytes(filePath3);
+                    byte[] image4 = File.ReadAllBytes(filePath4);
                     Restaurant restaurant1 = new Restaurant
                     {
                         Name = "La Famiglia",
@@ -65,7 +67,16 @@ namespace RestaurantMvcApp.Data
                         HourOfWork = "09:00-22:00",
                         ImagePath = image3
                     };
-                    await context.Restaurants.AddRangeAsync(restaurant1, restaurant2, restaurant3);
+                    Restaurant restaurant4 = new Restaurant
+                    {
+                        Name = "Хінкалі та вино",
+                        TypeKitchen = typeKitchen2,
+                        Address = "м.Умань,вул.Небесної Сотні, 4/2",
+                        Telephone = "0633608484",
+                        HourOfWork = "11:00-22:00",
+                        ImagePath = image4
+                    };
+                    await context.Restaurants.AddRangeAsync(restaurant1, restaurant2, restaurant3, restaurant4);
                     await context.SaveChangesAsync();
                 }
 

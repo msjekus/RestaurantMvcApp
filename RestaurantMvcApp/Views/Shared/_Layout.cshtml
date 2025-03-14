@@ -8,6 +8,10 @@
     <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
 </head>
 <body>
+    @{
+        string currentPath = Context.Request.Path;
+        string fullPath = $"{Context.Request.Path}{Context.Request.QueryString}";
+    }
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
@@ -18,13 +22,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-action="Index" asp-controller="Home">Головна</a>
+                            <a class="nav-link @(Url.Action("Index", "Home")==currentPath ? "active" : "")" aria-current="page" asp-action="Index" asp-controller="Home">Головна</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-action="Index" asp-controller="TypeKitchens">Тип кухні</a>
+                            <a class="nav-link @(Url.Action("Index", "TypeKitchens")==currentPath ? "active" : "")" aria-current="page" asp-action="Index" asp-controller="TypeKitchens">Тип кухні</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-action="Index" asp-controller="Restaurants">Ресторани</a>
+                            <a class="nav-link @(Url.Action("Index", "Restaurants")==currentPath ? "active" : "")" aria-current="page" asp-action="Index" asp-controller="Restaurants">Ресторани</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" aria-disabled="true">Disabled</a>

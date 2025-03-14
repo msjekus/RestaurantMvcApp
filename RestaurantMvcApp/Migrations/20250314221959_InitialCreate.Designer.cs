@@ -11,7 +11,7 @@ using RestaurantMvcApp.Data;
 namespace RestaurantMvcApp.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20250314120714_InitialCreate")]
+    [Migration("20250314221959_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
