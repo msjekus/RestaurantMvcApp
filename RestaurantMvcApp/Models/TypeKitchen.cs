@@ -5,7 +5,7 @@ namespace RestaurantMvcApp.Models
     public class TypeKitchen
     {
         public int Id { get; set; }
-        [Display(Name = "Тип кухні")]
+       
         public string TypeName { get; set; } = default!;
 
         public ICollection<Restaurant> Restaurants { get; set; } = default!;

@@ -18,7 +18,8 @@ namespace RestaurantMvcApp.Controllers
         private readonly RestaurantContext _context;
         private readonly IMapper mapper;
 
-        public RestaurantsController(RestaurantContext context, IMapper mapper)
+        public RestaurantsController(RestaurantContext context,
+            IMapper mapper)
         {
             _context = context;
             this.mapper = mapper;
@@ -29,7 +30,8 @@ namespace RestaurantMvcApp.Controllers
         {
             var restaurant = _context.Restaurants.Include(r => r.TypeKitchen)
                 .Where(r => r.IsDeleted == false);
-            IEnumerable<RestaurantDTO> restaurantDTOs = mapper.Map<IEnumerable<RestaurantDTO>>(await restaurant.ToListAsync());
+            IEnumerable<Restaurant> restaurantsList = await restaurant.ToListAsync();
+            IEnumerable<RestaurantDTO> restaurantDTOs = mapper.Map<IEnumerable<RestaurantDTO>>(restaurantsList);
             return View(restaurantDTOs);
         }
 
@@ -57,7 +59,7 @@ namespace RestaurantMvcApp.Controllers
         {
             EditRestaurantVM editRestaurantVM = new EditRestaurantVM()
             {
-                TypeKitchens = new SelectList(_context.TypeKitchens, "Id", nameof(TypeKitchen.TypeName))
+                TypeKitchens = new SelectList(_context.TypeKitchens, "Id", "TypeName")
             };
             //ViewData["TypeKitchenId"] = new SelectList(_context.TypeKitchens, "Id", "TypeName");
             return View(editRestaurantVM);
@@ -80,20 +82,20 @@ namespace RestaurantMvcApp.Controllers
                 //    Telephone = restaurant.Telephone,
                 //    HourOfWork = restaurant.HourOfWork,
                 //};
-                Restaurant createRestaurant = mapper.Map<Restaurant>(restaurantDTO);
+                Restaurant createdRestaurant = mapper.Map<Restaurant>(restaurantDTO);
                 using (MemoryStream ms = new MemoryStream())
                 {
                     photo.CopyTo(ms);
-                    createRestaurant.ImagePath = ms.ToArray();
+                    createdRestaurant.ImagePath = ms.ToArray();
                 }
-                _context.Add(createRestaurant);
+                _context.Restaurants.Add(createdRestaurant);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            EditRestaurantVM restaurantVM = new EditRestaurantVM
+            EditRestaurantVM restaurantVM = new EditRestaurantVM()
             {
-                Restaurant = restaurantDTO,
+                RestaurantDTO = restaurantDTO,
                 TypeKitchens = new SelectList(_context.TypeKitchens, "Id", nameof(TypeKitchen.TypeName))
             };
             return View(restaurantVM);
@@ -115,7 +117,7 @@ namespace RestaurantMvcApp.Controllers
             RestaurantDTO restaurantDTO = mapper.Map<RestaurantDTO>(restaurant);
             EditRestaurantVM restaurantVM = new EditRestaurantVM
             {
-                Restaurant = restaurantDTO,
+                RestaurantDTO = restaurantDTO,
                 TypeKitchens = new SelectList(_context.TypeKitchens, "Id", nameof(TypeKitchen.TypeName), restaurant.TypeKitchenId)
             };
            
@@ -174,7 +176,7 @@ namespace RestaurantMvcApp.Controllers
             }
             EditRestaurantVM editRestaurantVM = new EditRestaurantVM
             {
-                Restaurant = restaurant,
+                RestaurantDTO = restaurant,
                 
                 TypeKitchens = new SelectList(_context.TypeKitchens, "Id", nameof(TypeKitchen.TypeName), restaurant.TypeKitchenId)
             };

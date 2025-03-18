@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantMvcApp.Data;
 using RestaurantMvcApp.Models;
+using RestaurantMvcApp.Models.DTOs;
 
 namespace RestaurantMvcApp.Controllers
 {
     public class TypeKitchensController : Controller
     {
         private readonly RestaurantContext context;
+        private readonly IMapper mapper;
 
-        public TypeKitchensController(RestaurantContext context)
+        public TypeKitchensController(RestaurantContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
         public async Task<IActionResult> Index()
         {
@@ -27,10 +31,11 @@ namespace RestaurantMvcApp.Controllers
         [HttpPost]
         //[IgnoreAntiforgeryToken]
         
-        public async Task<IActionResult> Create(TypeKitchen typeKitchen) 
+        public async Task<IActionResult> Create(TypeKitchenDTO dTO) 
         {
             if (!ModelState.IsValid)
-                return View(typeKitchen);
+                return View(dTO);
+            TypeKitchen typeKitchen = mapper.Map<TypeKitchen>(dTO);
             context.TypeKitchens.Add(typeKitchen);
             await context.SaveChangesAsync();
             return RedirectToAction("Index");

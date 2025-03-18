@@ -7,5 +7,7 @@ namespace RestaurantMvcApp.Models.DTOs
         public int Id { get; set; }
         [Display(Name = "Тип кухні")]
         public string TypeName { get; set; } = default!;
+
+        public ICollection<RestaurantDTO>? Restaurants { get; set; }
     }
 }

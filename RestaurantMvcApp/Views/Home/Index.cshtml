@@ -34,10 +34,11 @@
 					<img src="data:image/*;base64,@(Convert.ToBase64String(restaurantDTO.ImagePath!))" class="card-img-top" alt="@restaurantDTO.Name" >
 					<div class="card-body">
 						<h5 class="card-title">@restaurantDTO.Name</h5>
-						<p class="card-text">@restaurantDTO.Address</p>
-						<p class="card-text">@restaurantDTO.Telephone</p>
-						<p class="card-text">@restaurantDTO.HourOfWork</p>
-						<a asp-action="Details" asp-route-id="@restaurantDTO.Id" class="btn btn-outline-success">Детальніше</a>
+						<p class="card-text"><b>Адреса:</b> @restaurantDTO.Address</p>
+						<p class="card-text"><b>Телефон:</b> @restaurantDTO.Telephone</p>
+						<p class="card-text"><b>Години роботи:</b> @restaurantDTO.HourOfWork</p>
+						<p class="card-text"><b>Тип кухні:</b> @restaurantDTO.TypeKitchen!.TypeName</p>
+						@* <a asp-action="Details" asp-route-id="@restaurantDTO.Id" class="btn btn-outline-success">Детальніше</a> *@
 					</div>
 				</div>
 			</div>

@@ -3,7 +3,8 @@ using RestaurantMvcApp.Data;
 using RestaurantMvcApp.Pifiles;
 
 var builder = WebApplication.CreateBuilder(args);
-string connStr= builder.Configuration.GetConnectionString("MSSqlRestaurant")??
+string connStr= builder.Configuration.GetConnectionString("SomeeRestaurant") ??
+//string connStr= builder.Configuration.GetConnectionString("MSSqlRestaurant")??
     throw new InvalidOperationException("You should specify conn string!" );
 builder.Services.AddDbContext<RestaurantContext>(options =>
     options.UseSqlServer(connStr));
